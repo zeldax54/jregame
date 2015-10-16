@@ -64,7 +64,7 @@ public class Generador : MonoBehaviour
     private TextMesh AciertosTextMesh;
     private TextMesh AyudasTextMesh;
     private TextMesh SiguientesTextMesh;
-    
+    private TextMesh cuadernilloTextMesh;//Este es para la 2da pista
 
    
     //Parte de las pistas
@@ -94,14 +94,15 @@ public class Generador : MonoBehaviour
         AciertosTextMesh = FindObjectsOfType<TextMesh>().First(a => a.name == "Aciertos valor");
         AyudasTextMesh = FindObjectsOfType<TextMesh>().First(a => a.name == "Ayudas Valor");
         SiguientesTextMesh = FindObjectsOfType<TextMesh>().First(a => a.name == "Siguientes Valor");
+        cuadernilloTextMesh = FindObjectsOfType<TextMesh>().First(a => a.name == "Cuadernillo");
 
         //Aqui asino los textMesh lo hago con la funcion para no estar repitiendo tanto codigo
-        UpdateTextMesh(OrgulloTextMesh, orgullo);
-        UpdateTextMesh(DiamantesTextMesh, diamantesl);
-        UpdateTextMesh(FallosTextMesh, fallos);
-        UpdateTextMesh(AciertosTextMesh, aciertos);
-        UpdateTextMesh(AyudasTextMesh, ayudas);
-        UpdateTextMesh(SiguientesTextMesh, siguientes);
+        UpdateTextMesh(OrgulloTextMesh, orgullo.ToString());
+        UpdateTextMesh(DiamantesTextMesh, diamantesl.ToString());
+        UpdateTextMesh(FallosTextMesh, fallos.ToString());
+        UpdateTextMesh(AciertosTextMesh, aciertos.ToString());
+        UpdateTextMesh(AyudasTextMesh, ayudas.ToString());
+        UpdateTextMesh(SiguientesTextMesh, siguientes.ToString());
 
         //Genero la escena por Primera vez
         PrepararGenerar(ListaPalabras[contpantallas], contpantallas);//La primera vez que se iniciar el scrip genero con el primer arreglo y la primera imagen
@@ -139,9 +140,11 @@ public class Generador : MonoBehaviour
     {
         ayudaactual++;
         orgullo--;
-        UpdateTextMesh(OrgulloTextMesh,orgullo);
+        UpdateTextMesh(OrgulloTextMesh, orgullo.ToString());
         _modalPanel.Elejir("Este personaje es "+ListaPalabras[contpantallas][2].ToString(),
               _modalPanel.CerrarPanel, aceptarButton, cancelarButton, true);//Muestro la pista
+        //Actualizo un Textmesh para que se me quede la pista en pantalla
+        UpdateTextMesh(cuadernilloTextMesh, ListaPalabras[contpantallas][2].ToString());
     }
 
 
@@ -197,8 +200,8 @@ public class Generador : MonoBehaviour
             ayudaactual++;//iNCREMENTAMOS AYUDACTUAL PARA NO TENER MAS AYUDAS DISPONIBLES EN ESTE NIVEL
             ayudas--;//El contador general de ayudas
             diamantesl--;//Quitamos un diamante
-            UpdateTextMesh(DiamantesTextMesh, diamantesl);//Atualizamos los textmesh
-            UpdateTextMesh(AyudasTextMesh, ayudas);
+            UpdateTextMesh(DiamantesTextMesh, diamantesl.ToString());//Atualizamos los textmesh
+            UpdateTextMesh(AyudasTextMesh, ayudas.ToString());
             int posrandom = Random.Range(0, posvacias.Count - 1);//Escojo una posicion al azar
             //Encontrando Posicion
             string palabraact = GetActualResp();//Obtengo la pabra actual de la respuesta
@@ -220,9 +223,9 @@ public class Generador : MonoBehaviour
     }
 
     //Metodo para actualizar los textMesh
-    private void UpdateTextMesh(TextMesh t, int valor)
+    private void UpdateTextMesh(TextMesh t, string valor)
     {
-        t.text = valor.ToString();
+        t.text = valor;
     }
 
     // Use this for initialization
@@ -432,7 +435,7 @@ public class Generador : MonoBehaviour
                 //Si es igual significa que ha completado el reto
                 //Incremento los aciertos
                 aciertos++;
-                UpdateTextMesh(AciertosTextMesh, aciertos);//Actualizo el textMesh
+                UpdateTextMesh(AciertosTextMesh, aciertos.ToString());//Actualizo el textMesh
 
                 Nextpantalla();//cargo la imagen siguiente 
 
@@ -443,7 +446,7 @@ public class Generador : MonoBehaviour
             {
                 //Incremento los fallos
                 fallos++;
-                UpdateTextMesh(FallosTextMesh, fallos);// Y actualizo el TextMesh
+                UpdateTextMesh(FallosTextMesh, fallos.ToString());// Y actualizo el TextMesh
 
             }
         }
@@ -493,9 +496,9 @@ public class Generador : MonoBehaviour
             //No se como cuentas si se rindio o no que vas a hacer con los diamantes
           //Mira a ver y despues se implementa esta parte
             diamantesl += 1;
-            
-            UpdateTextMesh(OrgulloTextMesh,orgullo);
-            UpdateTextMesh(DiamantesTextMesh, diamantesl);
+
+            UpdateTextMesh(OrgulloTextMesh, orgullo.ToString());
+            UpdateTextMesh(DiamantesTextMesh, diamantesl.ToString());
 
         }
         else //Generar los cuadrados con la otra imagen , letras y respuesta
@@ -504,7 +507,7 @@ public class Generador : MonoBehaviour
             {
                 vecesrendidas++;
                 orgullo--;
-                UpdateTextMesh(OrgulloTextMesh,orgullo);
+                UpdateTextMesh(OrgulloTextMesh, orgullo.ToString());
                 rindiendose = false;
                 _modalPanel.CerrarPanel();
             }
@@ -519,6 +522,7 @@ public class Generador : MonoBehaviour
             __incrementaletras = 0;
             _incrementader = 0;
             _incrementaizq = 0;
+            cuadernilloTextMesh.text = "";//Quito la pista si la hubiera
             GeneradorIzq.transform.position = new Vector3(-1.82f, -1.09f, 0f);
             GeneradorDer.transform.position = new Vector3(0.02999997f, -1.09f, 0f);
             GeneradorLetras.transform.position = new Vector3(-5.45f, -2.48f, 0f);
