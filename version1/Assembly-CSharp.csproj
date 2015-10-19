@@ -48,11 +48,13 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\AspectUtility.cs" />
      <Compile Include="Assets\Scripts\BotonJugar.cs" />
+     <Compile Include="Assets\Scripts\ControladorAdivinanzas.cs" />
      <Compile Include="Assets\Scripts\Generador.cs" />
      <Compile Include="Assets\Scripts\Menu\LaunchModelController.cs" />
      <Compile Include="Assets\Scripts\Menu\objectSpawnerController.cs" />
      <Compile Include="Assets\Scripts\ModalPanel.cs" />
      <Compile Include="Assets\Scripts\Procesador.cs" />
+     <Compile Include="Assets\Scripts\Tipos\Adivinanza.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
