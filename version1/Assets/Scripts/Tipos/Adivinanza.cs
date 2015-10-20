@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class Adivinanza  {
 
@@ -14,20 +15,16 @@ public class Adivinanza  {
 
     private List<Adivinanza> _adivinanzas;
 
-    public Adivinanza()
+  
+
+    public Adivinanza Getadivinazas(string numeroparam)
     {
-       
+        return _adivinanzas.FirstOrDefault(item => item.numero == numeroparam);
     }
 
-    public Adivinanza Getadivinazas(string numero)
+    public int ContAdivinanzas()
     {
-        foreach (var item in _adivinanzas)
-        {
-            if (item.numero == numero)
-                return item;
-        }
-        return null;
- 
+        return _adivinanzas.Count;
     }
 
     public void InicializarLista()
@@ -51,7 +48,15 @@ public class Adivinanza  {
         terceraAdivinanza.adivinanza = "Que tengo en el bolsillo?Dijo Bilbo.";
         terceraAdivinanza.respuesta = "Un anillo";
         terceraAdivinanza.falsasrespuestas = new string[] { "Una Piedra", "o Nada"};
+
+        Adivinanza cuartaAdivinanza = new Adivinanza();
+        cuartaAdivinanza.numero = "4";
+        cuartaAdivinanza.adivinanza = "Canta sin voz, vuela sin alas sin dientes muerde sin boca habla.";
+        cuartaAdivinanza.respuesta = "El Viento";
+        cuartaAdivinanza.falsasrespuestas = new string[] { "Una Hoja", "El cielo" };
+
         //Agrego las adivinzanas creadas
         _adivinanzas.Add(primeraAdivinanza); _adivinanzas.Add(segundaAdivinanza); _adivinanzas.Add(terceraAdivinanza);
+        _adivinanzas.Add(cuartaAdivinanza);
     }
 }
