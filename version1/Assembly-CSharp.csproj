@@ -53,8 +53,12 @@
      <Compile Include="Assets\Scripts\Menu\LaunchModelController.cs" />
      <Compile Include="Assets\Scripts\Menu\objectSpawnerController.cs" />
      <Compile Include="Assets\Scripts\ModalPanel.cs" />
+     <Compile Include="Assets\Scripts\PoemasControllers\ControlaPalabras.cs" />
+     <Compile Include="Assets\Scripts\PoemasControllers\ControladorPoemas.cs" />
+     <Compile Include="Assets\Scripts\PoemasControllers\MecanicaController.cs" />
      <Compile Include="Assets\Scripts\Procesador.cs" />
      <Compile Include="Assets\Scripts\Tipos\Adivinanza.cs" />
+     <Compile Include="Assets\Scripts\Tipos\Poema.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
