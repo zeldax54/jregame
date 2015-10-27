@@ -55,6 +55,7 @@
      <Compile Include="Assets\Scripts\ModalPanel.cs" />
      <Compile Include="Assets\Scripts\PoemasControllers\ControlaPalabras.cs" />
      <Compile Include="Assets\Scripts\PoemasControllers\ControladorPoemas.cs" />
+     <Compile Include="Assets\Scripts\PoemasControllers\ManejadorLinea.cs" />
      <Compile Include="Assets\Scripts\PoemasControllers\MecanicaController.cs" />
      <Compile Include="Assets\Scripts\Procesador.cs" />
      <Compile Include="Assets\Scripts\Tipos\Adivinanza.cs" />

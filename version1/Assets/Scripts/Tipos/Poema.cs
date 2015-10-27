@@ -1,5 +1,6 @@
 
     using System.Collections.Generic;
+    using System.Linq;
 
 public class Poema
 {
@@ -34,7 +35,7 @@ public class Poema
             "De flores y una *"
         };
                        
-        var poemaPalabras = new List<Palabra>(){new Palabra("Muera",1),new Palabra("Amo", 2),new Palabra("Bandera",3)};
+        var poemaPalabras = new List<Palabra>(){new Palabra("Muera",0),new Palabra("Amo", 1),new Palabra("Bandera",3)};
         var poemaFalsas = new List<Palabra>(){new Palabra("Vaya",-1),new Palabra("Espada",-1)};
         poemas.Add(new Poema(poemaTexto,poemaPalabras,poemaFalsas));//Poema 1
         //Segundo Poema
@@ -45,7 +46,7 @@ public class Poema
             "Llevaré * profundo,",
             "Tu cabellera de *"
         };
-        poemaPalabras = new List<Palabra>(){new Palabra("Mundo",1),new Palabra("Padre", 2),new Palabra("Plata",3)};
+        poemaPalabras = new List<Palabra>(){new Palabra("Mundo",0),new Palabra("Padre", 2),new Palabra("Plata",3)};
         poemaFalsas = new List<Palabra>() { new Palabra("Pais", -1), new Palabra("Oro", -1)};
         poemas.Add(new Poema(poemaTexto, poemaPalabras, poemaFalsas));//Poema 2
         //Tercer Poema
@@ -67,7 +68,10 @@ public class Poema
         return new List<Poema>();
     }
 
-
+    public Palabra GetPalabradeLina(List<Palabra> palabras, int linea)
+    {
+        return palabras.FirstOrDefault(p => p.posicion == linea);
+    }
 }
     
     
@@ -75,12 +79,14 @@ public class Poema
     public class Palabra
 {
         public string palabra {get; set; }
-        public int posicion { get; set; }
+        public int posicion { get; set; }//Posicion donde esta la palabra en las lineas del poema empesando a enumerar las lineas del poema en 0
 
         public Palabra(string ppalabra,int pposicion)
     {
         palabra = ppalabra;
         posicion = pposicion;
     }
+
+
 }
 

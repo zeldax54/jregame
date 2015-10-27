@@ -21,14 +21,14 @@ public class ControladorPoemas : MonoBehaviour
     public float DecrementaY=1;
     //
 
-    private List<Poema> _poemas;//Lista de poemas
+    public List<Poema> Poemas;//Lista de poemas
     private readonly Poema poema=new Poema();//Para traer la lista del scritp Poema
     public int _poemaactual = 0;//Saber en todo momento en que poema estoy y acceder desde el script de la mecanica
     private const string raya = "_________";
    
     private void Awake()
     {
-        _poemas = poema.InicializarLista();
+        Poemas = poema.InicializarLista();
         SetUI();//Inicializar la Ui por primera vez
     }
 
@@ -64,8 +64,6 @@ public class ControladorPoemas : MonoBehaviour
         {
             //mantener chequeada la posicion del mouse
             var curScreenSpace = new Vector3(Input.mousePosition.x, Input.mousePosition.y, _screenSpace.z);
-
-
             //Convertir de World posicion a Screen posicion
             var curPosition = Camera.main.ScreenToWorldPoint(curScreenSpace) + _offset;
             //Arastrar
@@ -77,15 +75,13 @@ public class ControladorPoemas : MonoBehaviour
 
     public void SetUI()
     {
-       
-      
-        InicializarPalabrasPosibles(_poemas[_poemaactual]);
+        InicializarPalabrasPosibles(Poemas[_poemaactual]);
         //Inicializar Lineas del Poema
         int cont = 1;//para asignar el nombre a las lineas
         float decrementa = 0;
-        if (!LimpiarLineas(_poemas[_poemaactual].TextoPoemaLineas))
+        if (!LimpiarLineas(Poemas[_poemaactual].TextoPoemaLineas))
         {
-            foreach (var linea in _poemas[_poemaactual].TextoPoemaLineas)
+            foreach (var linea in Poemas[_poemaactual].TextoPoemaLineas)
             {
                 //if (prefabLinea.gameObject.GetComponent<BoxCollider>() == null)
                 //{
