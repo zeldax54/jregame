@@ -71,10 +71,12 @@ public class ControladorPoemas : MonoBehaviour
         }
     }
 
- 
+
 
     public void SetUI()
     {
+        
+        
         InicializarPalabrasPosibles(Poemas[_poemaactual]);
         //Inicializar Lineas del Poema
         int cont = 1;//para asignar el nombre a las lineas

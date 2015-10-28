@@ -111,4 +111,29 @@ public class ModalPanel : MonoBehaviour {
         aceptar.gameObject.SetActive(true);
     }
 
+    public void ShowPoema(string poema,Text poemaUi, Button aceptar, Button cancelar,UnityAction accion)//Metodo del panel para mostrar un poema //Sirve para mostrar una informacion tambien sin que sea un poema
+    {
+        ModalPanelObjeto.gameObject.SetActive(true);
+        cancelar.gameObject.SetActive(false);
+        aceptar.onClick.RemoveAllListeners();
+        aceptar.onClick.AddListener(accion);
+        aceptar.onClick.AddListener(CerrarPanel);
+        poemaUi.text = poema;
+
+    }
+
+    public void Rendirse(string poema, Text poemaUi, Button aceptar, Button cancelar, UnityAction accion)
+    {
+        ModalPanelObjeto.gameObject.SetActive(true);
+        cancelar.gameObject.SetActive(true);
+        aceptar.onClick.RemoveAllListeners();
+        cancelar.onClick.RemoveAllListeners();
+        aceptar.onClick.AddListener(accion);
+        aceptar.onClick.AddListener(CerrarPanel);
+        cancelar.onClick.AddListener(CerrarPanel);
+        poemaUi.text = poema;
+        
+    }
+
+
 }
