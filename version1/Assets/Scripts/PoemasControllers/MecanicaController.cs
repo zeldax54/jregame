@@ -50,7 +50,7 @@ public class MecanicaController : MonoBehaviour
 
         if (lineasenInterfaz.Select(l => l.GetComponent<ManejadorLinea>()).Any(m => m.GetActualPuesta() == ""))
         {
-            Debug.Log("<color=blue>FALSO</color>");
+            _modalPanel.ShowPoema("Hay espacios sin completar.", TextoPema, Aceptar, Cancelar, _modalPanel.CerrarPanel);
             return;//No estan completas retorno falso para q el jugador termine de completar el poema
         }
         // Si todas estan completas Obtengo el poema actual
@@ -61,8 +61,8 @@ public class MecanicaController : MonoBehaviour
         string poema = "";//Guardar texto del poema para mostrarlo
         for (int i = 0; i < lineasenInterfaz.Count; i++)
         {
-            poema += lineasenInterfaz[i].text + "\n";
             ManejadorLinea manejador = lineasenInterfaz[i].GetComponent<ManejadorLinea>();//Obtengo el script manejador para cada linea
+            poema += manejador.PintarPalabra(lineasenInterfaz[i].text, "#008000ff") + "\n";
             if (manejador.ContienePalabraDeResp()){
                 if (manejador.GetActualPuesta() == poemaActual.GetPalabradeLina(lineasPema, i).palabra)//Si la palabra que tiene puesta coincide con la que le toca en el poema
                 {

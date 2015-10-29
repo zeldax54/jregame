@@ -63,6 +63,12 @@ public class ManejadorLinea : MonoBehaviour {
       
     }
 
+    public string PintarPalabra(string palabra, string color)
+    {
+        palabra = palabra.Replace("#ff0000ff", color);
+        return palabra;
+    }
+
     public bool ContienePalabraDeResp()//Metodo para saber si hay una palabra en rojo o sea si hay una respuesta ahi
     {
         if (t.text.Contains("ff0000ff"))
