@@ -11,16 +11,27 @@ public class MecanicaController : MonoBehaviour
     private ControladorPoemas _controladorPoema;
     public TextMesh Intentos;
     private int _intentos = 3;
-    private ModalPanel _modalPanel;//Objeto de tipo del script ModalPanel
-    public Text TextoPema;//Objeto del panel para mostrar el poema cuando lo resuelva
+    public TextMesh Ayuda;
+    private int _ayuda = 1;
+    public TextMesh Diamantes;
+    private int _diamantes = 5;
+    public TextMesh Orgullo;
+    private int _orgullo = 3;
+    private ModalPanel _modalPanel; //Objeto de tipo del script ModalPanel
+    public Text TextoPema; //Objeto del panel para mostrar el poema cuando lo resuelva
     public Button Aceptar;
     public Button Cancelar;
+    private bool _incdiamantel = true;
+    private bool _incorgullo=true;
 
-    void Awake()
+    private void Awake()
     {
-        _modalPanel = ModalPanel.Instance();// Le asigno una instancia del script Modal Panel
+        _modalPanel = ModalPanel.Instance(); // Le asigno una instancia del script Modal Panel
         _controladorPoema = GetComponent<ControladorPoemas>();
         UpdateTextMesh(Intentos, _intentos.ToString());
+        UpdateTextMesh(Ayuda, _ayuda.ToString());
+        UpdateTextMesh(Diamantes, _diamantes.ToString());
+        UpdateTextMesh(Orgullo, _orgullo.ToString());
     }
 
     private void UpdateTextMesh(TextMesh t, string n)
@@ -28,7 +39,7 @@ public class MecanicaController : MonoBehaviour
         t.text = n;
     }
 
-    public void Rendirse()//Chequea el estado de las Lineas del poema
+    public void Rendirse() //Chequea el estado de las Lineas del poema
     {
         if (_controladorPoema._poemaactual < 2)
         {
@@ -37,9 +48,14 @@ public class MecanicaController : MonoBehaviour
         }
         else
         {
-            _modalPanel.ShowPoema("Este es el Ultimo Poema", TextoPema, Aceptar, Cancelar, _modalPanel.CerrarPanel);
+            _modalPanel.ShowPoema("Este es el Ultimo Poema.Desea ir al <color=green>Menu Principal?</color> del Juego?", TextoPema, Aceptar, Cancelar, Salir);
         }
-        
+
+    }
+
+    private void Salir()
+    {
+        Application.LoadLevel("MenuMain");
     }
 
     public void CheckAndSet()
@@ -51,60 +67,89 @@ public class MecanicaController : MonoBehaviour
         if (lineasenInterfaz.Select(l => l.GetComponent<ManejadorLinea>()).Any(m => m.GetActualPuesta() == ""))
         {
             _modalPanel.ShowPoema("Hay espacios sin completar.", TextoPema, Aceptar, Cancelar, _modalPanel.CerrarPanel);
-            return;//No estan completas retorno falso para q el jugador termine de completar el poema
+            return; //No estan completas retorno falso para q el jugador termine de completar el poema
         }
         // Si todas estan completas Obtengo el poema actual
         Poema poemaActual = _controladorPoema.Poemas[_controladorPoema._poemaactual];
         //Obtengo las palabras correctas del poema las ordeno por su posicion para asegurar el orden
-        List<Palabra> lineasPema = poemaActual.Palabras.OrderBy(a=>a.posicion).ToList();
-        bool bandera = true;//para controlar si se resolvieron todos los poemas
-        string poema = "";//Guardar texto del poema para mostrarlo
+        List<Palabra> lineasPema = poemaActual.Palabras.OrderBy(a => a.posicion).ToList();
+        bool bandera = true; //para controlar si se resolvieron todos los poemas
+        string poema = ""; //Guardar texto del poema para mostrarlo
         for (int i = 0; i < lineasenInterfaz.Count; i++)
         {
-            ManejadorLinea manejador = lineasenInterfaz[i].GetComponent<ManejadorLinea>();//Obtengo el script manejador para cada linea
+            ManejadorLinea manejador = lineasenInterfaz[i].GetComponent<ManejadorLinea>();
+            //Obtengo el script manejador para cada linea
             poema += manejador.PintarPalabra(lineasenInterfaz[i].text, "#008000ff") + "\n";
-            if (manejador.ContienePalabraDeResp()){
-                if (manejador.GetActualPuesta() == poemaActual.GetPalabradeLina(lineasPema, i).palabra)//Si la palabra que tiene puesta coincide con la que le toca en el poema
+            if (manejador.ContienePalabraDeResp())
+            {
+                if (manejador.GetActualPuesta() == poemaActual.GetPalabradeLina(lineasPema, i).palabra)
+                    //Si la palabra que tiene puesta coincide con la que le toca en el poema
                 {
-                    manejador.SetCorrectWord("#008000ff"); //Pongo la palabra en Coorecta asignandole un nuevo color, verde en este caso
+                    manejador.SetCorrectWord("#008000ff");
+                    //Pongo la palabra en Coorecta asignandole un nuevo color, verde en este caso
                 }
                 else
                 {
                     bandera = false;
                     _intentos--;
+                    _incorgullo = false;
                     SetIntentos(_intentos);
-                    if (_intentos == 0)//Si ya ha agotado sus intentos significa que fallo el poema hay que mostrar el otro opema y resetear los intentos
+                    if (_intentos == 0)
+                        //Si ya ha agotado sus intentos significa que fallo el poema hay que mostrar el otro opema y resetear los intentos
                     {
-                       
-                        if (_controladorPoema._poemaactual < 2)
+
+                        if (_controladorPoema._poemaactual <= 2)
                         {
                             _intentos = 3;
                             SetIntentos(3);
                             _controladorPoema._poemaactual++;
-                            _modalPanel.ShowPoema("Tres errores.Poema Fallido.", TextoPema, Aceptar, Cancelar,_controladorPoema.SetUI);
-                           
+                            CheckAYuda(); //Si utilizo la ayuda la reseteo para el siguiente poema
+                            DecDiamantes();//Le quito un diamante fallo el poema
+                            _modalPanel.ShowPoema("Tres errores.Poema Fallido.", TextoPema, Aceptar, Cancelar,
+                            _controladorPoema.SetUI);
+
                         }
                     }
                 }
             }
-           
+
         }
         if (bandera)
         {
+            if (_incdiamantel)
+            {
+                if (_controladorPoema._poemaactual == 2)
+                    _incdiamantel = false;
+                else
+                {
+                    _diamantes++;
+                    UpdateTextMesh(Diamantes, _diamantes.ToString());
+                }
+
+            }
+
             if (_controladorPoema._poemaactual < 2)
             {
+
+
                 _intentos = 3;
                 SetIntentos(_intentos);
                 _controladorPoema._poemaactual++;
+                CheckAYuda();
                 _modalPanel.ShowPoema(poema, TextoPema, Aceptar, Cancelar, _controladorPoema.SetUI);
             }
             else
             {
+                if (_incorgullo)
+                {
+                    IncOrgullo();
+                    _incorgullo = false;
+                }
                 _intentos = 0;
                 SetIntentos(_intentos);
                 _modalPanel.ShowPoema(poema, TextoPema, Aceptar, Cancelar, _modalPanel.CerrarPanel);
             }
-        
+
         }
     }
 
@@ -114,13 +159,90 @@ public class MecanicaController : MonoBehaviour
         UpdateTextMesh(Intentos, _intentos.ToString());
     }
 
-    // Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    private void CheckAYuda()
+    {
+        if (_ayuda == 0)
+        {
+            _ayuda++;
+            UpdateTextMesh(Ayuda, _ayuda.ToString());
+        }
+
+    }
+
+    private void DecDiamantes()
+    {
+        _diamantes--;
+        UpdateTextMesh(Diamantes,_diamantes.ToString());
+    }
+
+    private void IncOrgullo()
+    {
+        _orgullo++;
+        UpdateTextMesh(Orgullo,_orgullo.ToString());
+    }
+
+    public void RequestHelp()
+    {
+        if(_ayuda>0)
+         _modalPanel.Rendirse("Una ayuda cuesta 1 Dianante", TextoPema, Aceptar, Cancelar, Help);
+        else
+        {
+            _modalPanel.ShowPoema("No quedan Ayudas para este poema", TextoPema, Aceptar, Cancelar, _modalPanel.CerrarPanel);
+        }
+    }
+
+    private void Help()
+    {
+        Poema poemaActual = _controladorPoema.Poemas[_controladorPoema._poemaactual];
+       
+        List<TextMesh> lineas = FindObjectsOfType<TextMesh>().Where(a => a.name.Contains("Linea")).OrderBy(a=>a.name).ToList();
+        int cont = 0;//Para saber en que linea estoy
+        foreach (var l in lineas)
+        {
+            ManejadorLinea m = l.GetComponent<ManejadorLinea>();
+            if (m.LineaDisponible() ||m.GetPalabraInsegura())
+            {
+                foreach (var p in poemaActual.Palabras)//Recorro la lista de palabras del poema donde estoy
+                {
+                    if (p.posicion == cont) //Si la popsicion de la palabra es de la linea donde estoy
+                    {
+                        GameObject o;
+                        if (m.GetActualPuesta() != "")//Si hay una palabra puesta la cambio o la marco como correcta
+                        {
+                            o = FindObjectsOfType<TextMesh>().First(a => a.text ==m.GetActualPuesta()).gameObject;//Aguardar la que esta puesta antes de cambiarla
+                            Debug.Log(o.GetComponent<TextMesh>().text);
+                            m.FindandReplaceRedWord(p.palabra);//Cambiando
+                            m.SetCorrectWord("#008000ff");//marcando correcta
+                            //Quitar la palara correcta de la lista y bajar la que habia
+                            GameObject correcta = FindObjectsOfType<TextMesh>().First(a => a.text == p.palabra).gameObject;
+                            ControlaPalabras cp = o.GetComponent<ControlaPalabras>();
+                            cp.SubirPalabra(correcta);
+                            cp.BajarPalabra(o.GetComponent<TextMesh>().text);//Bajando la que estaba puesta
+                        }
+                        else//Si no hay la pongo
+                        {
+                            m.PutText(p.palabra, m.FindFirst_());
+                            m.Remove_();
+                            m.SetCorrectWord("#008000ff");
+                            //Desactivando la palabra para que no la pueda seleccionar mas
+                             o = FindObjectsOfType<TextMesh>().First(a => a.text == p.palabra).gameObject;
+                             ControlaPalabras cp = o.GetComponent<ControlaPalabras>();
+                             cp.SubirPalabra(o);
+                        }
+                       
+                        _ayuda--;
+                        UpdateTextMesh(Ayuda, _ayuda.ToString());
+                        _diamantes--;
+                        UpdateTextMesh(Diamantes, _diamantes.ToString());
+                       
+                        break;
+                    }
+                }
+                break;
+            }
+            cont++;
+        }
+    }
+
+
 }

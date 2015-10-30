@@ -46,7 +46,7 @@ public class ControlaPalabras : MonoBehaviour
                 if (manejadorLinea.LineaDisponible())
                 {
                     int posicion = manejadorLinea.FindFirst_();//Encontrar la posicion de la 1ra _
-                    manejadorLinea.PutText(gameObject.GetComponent<TextMesh>(),posicion);//Agrego la palabra a la linea donde esten las __
+                    manejadorLinea.PutText(gameObject.GetComponent<TextMesh>().text,posicion);//Agrego la palabra a la linea donde esten las __
                     manejadorLinea.Remove_();//Quitar todas las _ de la linea
                     _soltando = true;
                 }
@@ -76,20 +76,19 @@ public class ControlaPalabras : MonoBehaviour
         }
     }
 
- 
+
 
    
 
- 
 
 
-  
 
-    private void SubirPalabra(GameObject o)
+
+    public void SubirPalabra(GameObject o)
     {
         o.transform.position = new Vector3(o.transform.position.x+20f,o.transform.position.y,o.transform.position.z);
     }
-    private void BajarPalabra(string palabra)
+    public void BajarPalabra(string palabra)
     {
         TextMesh o =
             FindObjectsOfType<TextMesh>().First(a => a.text == palabra);

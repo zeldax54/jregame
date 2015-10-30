@@ -71,14 +71,21 @@ public class ManejadorLinea : MonoBehaviour {
 
     public bool ContienePalabraDeResp()//Metodo para saber si hay una palabra en rojo o sea si hay una respuesta ahi
     {
+        if (t.text.Contains("ff0000ff") || t.text.Contains("008000ff"))
+            return true;
+        return false;
+    }
+
+    public bool GetPalabraInsegura()//Para saber si hay una palabra en rojo ahi
+    {
         if (t.text.Contains("ff0000ff"))
             return true;
         return false;
     }
 
-    public void PutText(TextMesh palabra, int startpos)//Pongo el texto en la linea y lo coloreo
+    public void PutText(string palabra, int startpos)//Pongo el texto en la linea y lo coloreo
     {
-        t.text = t.text.Insert(startpos, "<color=#ff0000ff>" + palabra.text + "</color>");
+        t.text = t.text.Insert(startpos, "<color=#ff0000ff>" + palabra + "</color>");
     }
 
     public void Remove_()//Quitar las __________
@@ -121,5 +128,6 @@ public class ManejadorLinea : MonoBehaviour {
         t.text = x;
         return olddword;
     }
+
 
 }

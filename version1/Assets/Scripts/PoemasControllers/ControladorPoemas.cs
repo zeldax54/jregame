@@ -75,38 +75,28 @@ public class ControladorPoemas : MonoBehaviour
 
     public void SetUI()
     {
-        
-        
-        InicializarPalabrasPosibles(Poemas[_poemaactual]);
-        //Inicializar Lineas del Poema
-        int cont = 1;//para asignar el nombre a las lineas
-        float decrementa = 0;
-        if (!LimpiarLineas(Poemas[_poemaactual].TextoPoemaLineas))
-        {
-            foreach (var linea in Poemas[_poemaactual].TextoPoemaLineas)
-            {
-                //if (prefabLinea.gameObject.GetComponent<BoxCollider>() == null)
-                //{
-                //    prefabLinea.gameObject.AddComponent<BoxCollider>();////Asignar un collider al objeto para poder hacer raycast(click sobre el) o detectar colisiones 
-                //    prefabLinea.gameObject.GetComponent<BoxCollider>().isTrigger = true;//Ponerlo a detectar colisiones 
-                //}
-
-                prefabLinea.name = "Linea" + cont;
-                prefabLinea.text = Remaster(linea);
-                // Una vez puesto los objetos en su lugar instanceo el cuadro para dibujar
-                //Igual que en los cuadros
-                Instantiate(prefabLinea,
-                    new Vector3(LineStarterMarcador.transform.position.x, LineStarterMarcador.transform.position.y - decrementa,
-                        0f), Quaternion.identity);
-                //Incremento contador y Y
-                cont++;
-                decrementa += DecrementaY;
-
-            }
-        }
       
-       
-       
+            InicializarPalabrasPosibles(Poemas[_poemaactual]);
+            //Inicializar Lineas del Poema
+            int cont = 1;//para asignar el nombre a las lineas
+            float decrementa = 0;
+            if (!LimpiarLineas(Poemas[_poemaactual].TextoPoemaLineas))
+            {
+                foreach (var linea in Poemas[_poemaactual].TextoPoemaLineas)
+                {
+                 
+                    prefabLinea.name = "Linea" + cont;
+                    prefabLinea.text = Remaster(linea);
+                    // Una vez puesto los objetos en su lugar instanceo el cuadro para dibujar
+                    //Igual que en los cuadros
+                    Instantiate(prefabLinea,
+                        new Vector3(LineStarterMarcador.transform.position.x, LineStarterMarcador.transform.position.y - decrementa,
+                            0f), Quaternion.identity);
+                    //Incremento contador y Y
+                    cont++;
+                    decrementa += DecrementaY;
+                }
+            }
     }
 
     private bool LimpiarLineas(List<string>lineaspoema )
