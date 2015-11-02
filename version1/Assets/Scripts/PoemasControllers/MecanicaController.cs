@@ -23,7 +23,8 @@ public class MecanicaController : MonoBehaviour
     public Button Cancelar;
     private bool _incdiamantel = true;
     private bool _incorgullo=true;
-
+    private bool lastPoema;
+    private Poema PoemaActual;
     private void Awake()
     {
         _modalPanel = ModalPanel.Instance(); // Le asigno una instancia del script Modal Panel
@@ -50,7 +51,6 @@ public class MecanicaController : MonoBehaviour
         {
             _modalPanel.ShowPoema("Este es el Ultimo Poema.Desea ir al <color=green>Menu Principal?</color> del Juego?", TextoPema, Aceptar, Cancelar, Salir);
         }
-
     }
 
     private void Salir()
@@ -71,6 +71,7 @@ public class MecanicaController : MonoBehaviour
         }
         // Si todas estan completas Obtengo el poema actual
         Poema poemaActual = _controladorPoema.Poemas[_controladorPoema._poemaactual];
+        PoemaActual = poemaActual;
         //Obtengo las palabras correctas del poema las ordeno por su posicion para asegurar el orden
         List<Palabra> lineasPema = poemaActual.Palabras.OrderBy(a => a.posicion).ToList();
         bool bandera = true; //para controlar si se resolvieron todos los poemas
@@ -100,15 +101,27 @@ public class MecanicaController : MonoBehaviour
 
                         if (_controladorPoema._poemaactual <= 2)
                         {
-                            _intentos = 3;
-                            SetIntentos(3);
-                            _controladorPoema._poemaactual++;
-                            CheckAYuda(); //Si utilizo la ayuda la reseteo para el siguiente poema
-                            DecDiamantes();//Le quito un diamante fallo el poema
-                            _modalPanel.ShowPoema("Tres errores.Poema Fallido.", TextoPema, Aceptar, Cancelar,
-                            _controladorPoema.SetUI);
-
+                            if (lastPoema == false)
+                            {
+                                _intentos = 3;
+                                SetIntentos(3);
+                                CheckAYuda(); //Si utilizo la ayuda la reseteo para el siguiente poema
+                                DecDiamantes();//Le quito un diamante fallo el poema
+                            }
+                           
+                            if (_controladorPoema._poemaactual == 2)
+                            {
+                                lastPoema = true;
+                                _modalPanel.ShowPoema("<color=red>Poema Fallido</color>\n" + GetCorrectPoema(),
+                                    TextoPema, Aceptar, Cancelar,_modalPanel.CerrarPanel);
+                            }
+                            if (_controladorPoema._poemaactual <2)
+                            {
+                                _controladorPoema._poemaactual++;
+                                _modalPanel.ShowPoema("<color=red>Poema Fallido</color>\n" + GetCorrectPoema(), TextoPema, Aceptar, Cancelar, _controladorPoema.SetUI);
+                            }
                         }
+                     
                     }
                 }
             }
@@ -136,7 +149,7 @@ public class MecanicaController : MonoBehaviour
                 SetIntentos(_intentos);
                 _controladorPoema._poemaactual++;
                 CheckAYuda();
-                _modalPanel.ShowPoema(poema, TextoPema, Aceptar, Cancelar, _controladorPoema.SetUI);
+                _modalPanel.ShowPoema("<color=blue>Correcto</color>\n"+poema, TextoPema, Aceptar, Cancelar, _controladorPoema.SetUI);
             }
             else
             {
@@ -147,11 +160,14 @@ public class MecanicaController : MonoBehaviour
                 }
                 _intentos = 0;
                 SetIntentos(_intentos);
-                _modalPanel.ShowPoema(poema, TextoPema, Aceptar, Cancelar, _modalPanel.CerrarPanel);
+                _modalPanel.ShowPoema("<color=blue>Correcto</color>\n" + poema, TextoPema, Aceptar, Cancelar, _controladorPoema.SetUI);
             }
 
         }
     }
+
+
+  
 
     private void SetIntentos(int intentos)
     {
@@ -244,5 +260,46 @@ public class MecanicaController : MonoBehaviour
         }
     }
 
+    private string GetCorrectPoema()//Tomar el poema y conformarlo con las palabras correctas
+    {
+        
+        string final = "";
 
+        for (int i = 0; i < PoemaActual.TextoPoemaLineas.Count; i++)
+        {
+            string linea = PoemaActual.TextoPoemaLineas[i];
+            if (linea.Contains("*"))
+            {
+                foreach (var pals in PoemaActual.Palabras)
+                {
+                    if (pals.posicion == i)
+                    {
+                        int pos = FindAster(linea);
+                        final += linea.Insert(pos, "<color=green>" + pals.palabra + "</color>\n");
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                final += linea + "\n";
+            }
+        }
+        return final;
+    }
+
+    int FindAster(string t)
+    {
+            for (int i = 0; i < t.Length; i++)
+        {
+            if (t[i] == '*')
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+ 
 }
+
+

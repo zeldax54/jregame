@@ -130,4 +130,9 @@ public class ManejadorLinea : MonoBehaviour {
     }
 
 
+
+    internal int FindFirst_(string p)
+    {
+        throw new System.NotImplementedException();
+    }
 }
