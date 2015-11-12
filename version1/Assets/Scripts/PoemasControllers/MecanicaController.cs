@@ -10,7 +10,7 @@ public class MecanicaController : MonoBehaviour
 
     private ControladorPoemas _controladorPoema;
     public TextMesh Intentos;
-    private int _intentos = 3;
+    public int IntentosValue = 3;
     public TextMesh Ayuda;
     private int _ayuda = 1;
     public TextMesh Diamantes;
@@ -29,13 +29,13 @@ public class MecanicaController : MonoBehaviour
     {
         _modalPanel = ModalPanel.Instance(); // Le asigno una instancia del script Modal Panel
         _controladorPoema = GetComponent<ControladorPoemas>();
-        UpdateTextMesh(Intentos, _intentos.ToString());
+        UpdateTextMesh(Intentos, IntentosValue.ToString());
         UpdateTextMesh(Ayuda, _ayuda.ToString());
         UpdateTextMesh(Diamantes, _diamantes.ToString());
         UpdateTextMesh(Orgullo, _orgullo.ToString());
     }
 
-    private void UpdateTextMesh(TextMesh t, string n)
+    public void UpdateTextMesh(TextMesh t, string n)
     {
         t.text = n;
     }
@@ -92,10 +92,10 @@ public class MecanicaController : MonoBehaviour
                 else
                 {
                     bandera = false;
-                    _intentos--;
+                    IntentosValue--;
                     _incorgullo = false;
-                    SetIntentos(_intentos);
-                    if (_intentos == 0)
+                    SetIntentos(IntentosValue);
+                    if (IntentosValue == 0)
                         //Si ya ha agotado sus intentos significa que fallo el poema hay que mostrar el otro opema y resetear los intentos
                     {
 
@@ -103,7 +103,7 @@ public class MecanicaController : MonoBehaviour
                         {
                             if (lastPoema == false)
                             {
-                                _intentos = 3;
+                                IntentosValue = 3;
                                 SetIntentos(3);
                                 CheckAYuda(); //Si utilizo la ayuda la reseteo para el siguiente poema
                                 DecDiamantes();//Le quito un diamante fallo el poema
@@ -145,8 +145,8 @@ public class MecanicaController : MonoBehaviour
             {
 
 
-                _intentos = 3;
-                SetIntentos(_intentos);
+                IntentosValue = 3;
+                SetIntentos(IntentosValue);
                 _controladorPoema._poemaactual++;
                 CheckAYuda();
                 _modalPanel.ShowPoema("<color=blue>Correcto</color>\n"+poema, TextoPema, Aceptar, Cancelar, _controladorPoema.SetUI);
@@ -158,8 +158,8 @@ public class MecanicaController : MonoBehaviour
                     IncOrgullo();
                     _incorgullo = false;
                 }
-                _intentos = 0;
-                SetIntentos(_intentos);
+                IntentosValue = 0;
+                SetIntentos(IntentosValue);
                 _modalPanel.ShowPoema("<color=blue>Correcto</color>\n" + poema, TextoPema, Aceptar, Cancelar, _controladorPoema.SetUI);
             }
 
@@ -171,8 +171,8 @@ public class MecanicaController : MonoBehaviour
 
     private void SetIntentos(int intentos)
     {
-        _intentos = intentos;
-        UpdateTextMesh(Intentos, _intentos.ToString());
+        IntentosValue = intentos;
+        UpdateTextMesh(Intentos, IntentosValue.ToString());
     }
 
     private void CheckAYuda()

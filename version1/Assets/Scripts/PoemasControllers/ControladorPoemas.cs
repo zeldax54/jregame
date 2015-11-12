@@ -75,7 +75,11 @@ public class ControladorPoemas : MonoBehaviour
 
     public void SetUI()
     {
-      
+        //Reiniciar los intentos
+        MecanicaController m = GetComponent<MecanicaController>();
+        m.IntentosValue = 3;
+        m.UpdateTextMesh(m.Intentos,m.IntentosValue.ToString());
+        ////////////////
             InicializarPalabrasPosibles(Poemas[_poemaactual]);
             //Inicializar Lineas del Poema
             int cont = 1;//para asignar el nombre a las lineas

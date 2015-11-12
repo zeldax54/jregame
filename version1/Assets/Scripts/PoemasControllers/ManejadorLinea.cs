@@ -71,9 +71,13 @@ public class ManejadorLinea : MonoBehaviour {
 
     public bool ContienePalabraDeResp()//Metodo para saber si hay una palabra en rojo o sea si hay una respuesta ahi
     {
-        if (t.text.Contains("ff0000ff") || t.text.Contains("008000ff"))
-            return true;
-        return false;
+        return t.text.Contains("ff0000ff") || t.text.Contains("008000ff");
+    }
+
+    public bool IsRespuesta()//Saber si la palabra puesta tiene respuesta
+    {
+        return t.text.Contains("008000ff");
+
     }
 
     public bool GetPalabraInsegura()//Para saber si hay una palabra en rojo ahi

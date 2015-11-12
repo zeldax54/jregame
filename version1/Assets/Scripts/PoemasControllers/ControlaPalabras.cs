@@ -51,14 +51,12 @@ public class ControlaPalabras : MonoBehaviour
                     _soltando = true;
                 }
                 //Caso 2 Si la linea  tiene palabras que ya han sido puestas 
-                else if (manejadorLinea.ContienePalabraDeResp()) //Si la linea tiene color rojo es q tiene palabras puestas
+                else if (manejadorLinea.ContienePalabraDeResp() && !manejadorLinea.IsRespuesta()) //Si la linea tiene color rojo es q tiene palabras puestas y no es la respuesta correcta.
                 {
                  string oldword=manejadorLinea.FindandReplaceRedWord(gameObject.GetComponent<TextMesh>().text);
                  _soltando = true;
                  BajarPalabra(oldword);
-                
                 }
-               
             }
         }
     }
